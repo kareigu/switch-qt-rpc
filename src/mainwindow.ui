@@ -65,7 +65,7 @@ border-radius: 3;</string>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">image: url(:/images/icon.png);</string>
+          <string notr="true">image: url(:/images/default.png);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -118,7 +118,7 @@ border-radius: 3;</string>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">image: url(:/images/icon.png);</string>
+          <string notr="true">image: url(:/images/default.png);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>

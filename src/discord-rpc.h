@@ -1,6 +1,7 @@
 #ifndef DISCORDRPC_H
 #define DISCORDRPC_H
 
+#include <string>
 #include <discord.h>
 #include <QtConcurrent/QtConcurrent>
 
@@ -11,6 +12,11 @@ namespace DC_RPC {
 
   struct Data {
     uint64_t clientId = CLIENT_ID;
+
+    std::string gameName = "Home";
+    std::string statusMsg = "Idle";
+
+
     bool interrupt = false;
     QFuture<void> callbackRunner;
 
@@ -19,6 +25,7 @@ namespace DC_RPC {
 
   Data* initDiscord();
   void runDiscordCallbacks(Data* data);
+  void updateActivity(Data* data);
 
 }
 

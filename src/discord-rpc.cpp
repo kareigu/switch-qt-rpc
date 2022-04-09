@@ -21,17 +21,21 @@ namespace DC_RPC {
     auto result = discord::Core::Create(data->clientId, (uint64_t)discord::CreateFlags::Default, &data->core);
     QDebug(QtMsgType::QtDebugMsg) << "Discord RPC Create result: " << (uint64_t)result;
 
-    discord::Activity activity{};
-    activity.SetState("testing");
-    activity.SetDetails("test");
-    activity.GetAssets().SetLargeImage("default");
-    data->core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {
-      QDebug(QtMsgType::QtDebugMsg) << ((result == discord::Result::Ok) ? "Succeeded" : "Failed") << " updating activity!";
-    });
+    updateActivity(data);
 
 
     data->callbackRunner = QtConcurrent::run(runDiscordCallbacks, data);
     return data;
+  }
+
+  void updateActivity(Data* data) {
+    discord::Activity activity{};
+    activity.SetDetails(data->gameName.c_str());
+    activity.SetState(data->statusMsg.c_str());
+    activity.GetAssets().SetLargeImage("default");
+    data->core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {
+      QDebug(QtMsgType::QtDebugMsg) << ((result == discord::Result::Ok) ? "Succeeded" : "Failed") << " updating activity!";
+    });
   }
 
 }

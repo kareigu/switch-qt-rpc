@@ -26,6 +26,8 @@ private slots:
 
   void defaultIconButtonPressed();
   void defaultIconButtonReleased();
+  void bwIconButtonPressed();
+  void bwIconButtonReleased();
 
 private:
   Ui::MainWindow *ui;

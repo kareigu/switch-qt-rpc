@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include "discord-rpc.h"
+#include "stdio.h"
 #include <QPushButton>
 
 
@@ -27,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   connect(ui->defaultIconButton, &QPushButton::pressed, this, &MainWindow::defaultIconButtonPressed);
   connect(ui->defaultIconButton, &QPushButton::released, this, &MainWindow::defaultIconButtonReleased);
+  connect(ui->bwIconButton, &QPushButton::pressed, this, &MainWindow::bwIconButtonPressed);
+  connect(ui->bwIconButton, &QPushButton::released, this, &MainWindow::bwIconButtonReleased);
 }
 
 MainWindow::~MainWindow() {
@@ -36,12 +39,20 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void iconButtonPressed(QPushButton* btn) {
-  btn->setStyleSheet("image: url(:/images/icon.png);\nbackground-color: rgb(252, 252, 252);\nborder: 2 solid #00c0e1;\nborder-radius: 3;");
+void iconButtonPressed(QPushButton* btn, const char* iconName) {
+  std::string styleSheet = "background-color: rgb(252, 252, 252);\nborder: 2 solid #00c0e1;\nborder-radius: 3;";
+  styleSheet.append("\nimage: url(:/images/");
+  styleSheet.append(iconName);
+  styleSheet.append(".png);");
+  btn->setStyleSheet(styleSheet.c_str());
 }
 
-void iconButtonReleased(QPushButton* btn) {
-  btn->setStyleSheet("image: url(:/images/icon.png);\nbackground-color: rgb(252, 252, 252);\nborder: 2 solid #ff000e;\nborder-radius: 3;");
+void iconButtonReleased(QPushButton* btn, const char* iconName) {
+  std::string styleSheet = "background-color: rgb(252, 252, 252);\nborder: 2 solid #ff000e;\nborder-radius: 3;";
+  styleSheet.append("\nimage: url(:/images/");
+  styleSheet.append(iconName);
+  styleSheet.append(".png);");
+  btn->setStyleSheet(styleSheet.c_str());
 }
 
 void primaryButtonPressed(QPushButton* btn) {
@@ -61,12 +72,25 @@ void secondaryButtonReleased(QPushButton* btn) {
 }
 
 void MainWindow::defaultIconButtonPressed() {
-  iconButtonPressed(ui->defaultIconButton);
-  m_DiscordData->image = DC_RPC::defaultImage();
+  const char* iconName = DC_RPC::defaultImage();
+  iconButtonPressed(ui->defaultIconButton, iconName);
 }
 
 void MainWindow::defaultIconButtonReleased() {
-  iconButtonReleased(ui->defaultIconButton);
+  const char* iconName = DC_RPC::defaultImage();
+  iconButtonReleased(ui->defaultIconButton, iconName);
+  m_DiscordData->image = iconName;
+}
+
+void MainWindow::bwIconButtonPressed() {
+  const char* iconName = "bw";
+  iconButtonPressed(ui->bwIconButton, iconName);
+}
+
+void MainWindow::bwIconButtonReleased() {
+  const char* iconName = "bw";
+  iconButtonReleased(ui->bwIconButton, iconName);
+  m_DiscordData->image = iconName;
 }
 
 void MainWindow::setPlayingButtonPressed() {

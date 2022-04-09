@@ -10,11 +10,14 @@
 
 namespace DC_RPC {
 
+  inline const char* defaultGame() { return "Home"; };
+  inline const char* defaultStatus() { return "Idle"; };
+
   struct Data {
     uint64_t clientId = CLIENT_ID;
 
-    std::string gameName = "Home";
-    std::string statusMsg = "Idle";
+    std::string gameName = defaultGame();
+    std::string statusMsg = defaultStatus();
 
 
     bool interrupt = false;

@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
-#include <discord.h>
+#include "discord-rpc.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,13 +21,9 @@ private slots:
   void on_setPlayingButton_clicked();
 
 private:
-  void initDiscord();
   Ui::MainWindow *ui;
 
 
-  bool m_InterruptCallbackRunner = false;
-  QFuture<void> m_DiscordCallbacksRunner;
-
-  discord::Core* m_Discord;
+  DC_RPC::Data* m_DiscordData;
 };
 #endif // MAINWINDOW_H

@@ -18,8 +18,14 @@ public:
   ~MainWindow();
 
 private slots:
-  void setPlayingButtonClicked();
-  void idleButtonClicked();
+  void setPlayingButtonPressed();
+  void setPlayingButtonReleased();
+
+  void idleButtonPressed();
+  void idleButtonReleased();
+
+  void defaultIconButtonPressed();
+  void defaultIconButtonReleased();
 
 private:
   Ui::MainWindow *ui;

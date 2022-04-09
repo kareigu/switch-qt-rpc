@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include "discord-rpc.h"
+#include <QPushButton>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,8 +15,18 @@ MainWindow::MainWindow(QWidget *parent)
   ui->gameName->setText(m_DiscordData->gameName.c_str());
   ui->statusMsg->setText(m_DiscordData->statusMsg.c_str());
 
-  connect(ui->setPlayingButton, &QPushButton::released, this, &MainWindow::setPlayingButtonClicked);
-  connect(ui->idleButton, &QPushButton::released, this, &MainWindow::idleButtonClicked);
+
+
+  connect(ui->setPlayingButton, &QPushButton::pressed, this, &MainWindow::setPlayingButtonPressed);
+  connect(ui->setPlayingButton, &QPushButton::released, this, &MainWindow::setPlayingButtonReleased);
+
+
+  connect(ui->idleButton, &QPushButton::pressed, this, &MainWindow::idleButtonPressed);
+  connect(ui->idleButton, &QPushButton::released, this, &MainWindow::idleButtonReleased);
+
+
+  connect(ui->defaultIconButton, &QPushButton::pressed, this, &MainWindow::defaultIconButtonPressed);
+  connect(ui->defaultIconButton, &QPushButton::released, this, &MainWindow::defaultIconButtonReleased);
 }
 
 MainWindow::~MainWindow() {
@@ -25,17 +36,60 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::setPlayingButtonClicked() {
+void iconButtonPressed(QPushButton* btn) {
+  btn->setStyleSheet("image: url(:/images/icon.png);\nbackground-color: rgb(252, 252, 252);\nborder: 2 solid #00c0e1;\nborder-radius: 3;");
+}
+
+void iconButtonReleased(QPushButton* btn) {
+  btn->setStyleSheet("image: url(:/images/icon.png);\nbackground-color: rgb(252, 252, 252);\nborder: 2 solid #ff000e;\nborder-radius: 3;");
+}
+
+void primaryButtonPressed(QPushButton* btn) {
+  btn->setStyleSheet("background-color: #00c0e1;\nborder-radius: 3;\ncolor: #FFFFFF; border: 2 solid #ffffff;");
+}
+
+void primaryButtonReleased(QPushButton* btn) {
+  btn->setStyleSheet("background-color: #00c0e1;\nborder-radius: 3;\ncolor: #FFFFFF;");
+}
+
+void secondaryButtonPressed(QPushButton* btn) {
+  btn->setStyleSheet("background-color: #fe6054;\nborder-radius: 3;\ncolor: #FFFFFF; border: 2 solid #ffffff;");
+}
+
+void secondaryButtonReleased(QPushButton* btn) {
+  btn->setStyleSheet("background-color: #fe6054;\nborder-radius: 3;\ncolor: #FFFFFF;");
+}
+
+void MainWindow::defaultIconButtonPressed() {
+  iconButtonPressed(ui->defaultIconButton);
+  m_DiscordData->image = DC_RPC::defaultImage();
+}
+
+void MainWindow::defaultIconButtonReleased() {
+  iconButtonReleased(ui->defaultIconButton);
+}
+
+void MainWindow::setPlayingButtonPressed() {
+  primaryButtonPressed(ui->setPlayingButton);
+}
+
+void MainWindow::setPlayingButtonReleased() {
   m_DiscordData->gameName = ui->gameName->text().toStdString();
   m_DiscordData->statusMsg = ui->statusMsg->text().toStdString();
   QDebug(QtMsgType::QtDebugMsg) << "Set Playing - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
   DC_RPC::updateActivity(m_DiscordData);
+  primaryButtonReleased(ui->setPlayingButton);
 }
 
-void MainWindow::idleButtonClicked() {
+void MainWindow::idleButtonPressed() {
+  secondaryButtonPressed(ui->idleButton);
+}
+
+void MainWindow::idleButtonReleased() {
   m_DiscordData->gameName = DC_RPC::defaultGame();
   m_DiscordData->statusMsg = DC_RPC::defaultStatus();
   QDebug(QtMsgType::QtDebugMsg) << "Set Idle - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
   DC_RPC::updateActivity(m_DiscordData);
+  secondaryButtonReleased(ui->idleButton);
 }
 

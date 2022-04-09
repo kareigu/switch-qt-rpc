@@ -32,7 +32,8 @@ namespace DC_RPC {
     discord::Activity activity{};
     activity.SetDetails(data->gameName.c_str());
     activity.SetState(data->statusMsg.c_str());
-    activity.GetAssets().SetLargeImage("default");
+    activity.GetAssets().SetLargeImage(data->image.c_str());
+    activity.GetAssets().SetSmallImage(defaultImage());
     data->core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {
       QDebug(QtMsgType::QtDebugMsg) << ((result == discord::Result::Ok) ? "Succeeded" : "Failed") << " updating activity!";
     });

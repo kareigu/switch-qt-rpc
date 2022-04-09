@@ -21,6 +21,7 @@ set(PROJECT_SOURCES
         src/mainwindow.ui
         src/discord-rpc.h
         src/discord-rpc.cpp
+        assets/assets.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

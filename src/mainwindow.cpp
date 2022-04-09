@@ -75,7 +75,16 @@ void MainWindow::setPlayingButtonPressed() {
 
 void MainWindow::setPlayingButtonReleased() {
   m_DiscordData->gameName = ui->gameName->text().toStdString();
-  m_DiscordData->statusMsg = ui->statusMsg->text().toStdString();
+  auto status = ui->statusMsg->text();
+
+  if(status == DC_RPC::defaultStatus()) {
+    const char* onlineText = "Online";
+    m_DiscordData->statusMsg =  onlineText;
+    ui->statusMsg->setText(onlineText);
+  } else {
+    m_DiscordData->statusMsg = status.toStdString();
+  }
+
   QDebug(QtMsgType::QtDebugMsg) << "Set Playing - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
   DC_RPC::updateActivity(m_DiscordData);
   primaryButtonReleased(ui->setPlayingButton);
@@ -88,6 +97,7 @@ void MainWindow::idleButtonPressed() {
 void MainWindow::idleButtonReleased() {
   m_DiscordData->gameName = DC_RPC::defaultGame();
   m_DiscordData->statusMsg = DC_RPC::defaultStatus();
+  ui->statusMsg->setText(DC_RPC::defaultStatus());
   QDebug(QtMsgType::QtDebugMsg) << "Set Idle - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
   DC_RPC::updateActivity(m_DiscordData);
   secondaryButtonReleased(ui->idleButton);

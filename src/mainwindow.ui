@@ -175,7 +175,7 @@ border-radius: 3;</string>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">margin-left: 33;
+         <string notr="true">margin-left: 75;
 color: #ffffff;</string>
         </property>
         <property name="text">
@@ -209,8 +209,8 @@ border-radius: 3;
 selection-color: rgb(25, 188, 251);
 border: 2 solid;
 border-color: #ffffff #ffffff rgb(25, 188, 251) #ffffff;
-margin-left: auto;
-margin-right: auto;</string>
+margin-left:  80;
+margin-right: 80;</string>
         </property>
         <property name="maxLength">
          <number>100</number>

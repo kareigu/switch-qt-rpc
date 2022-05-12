@@ -3,6 +3,7 @@
 
 #include <string>
 #include <discord.h>
+#include <chrono>
 #include <QtConcurrent/QtConcurrent>
 
 
@@ -20,6 +21,15 @@ namespace DC_RPC {
     std::string gameName = defaultGame();
     std::string statusMsg = defaultStatus();
     std::string image = defaultImage();
+
+    struct PrevState {
+      std::string gameName = defaultGame();
+      std::string statusMsg = defaultStatus();
+    };
+
+    PrevState prevState;
+
+    std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
 
     bool interrupt = false;

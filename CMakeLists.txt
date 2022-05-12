@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         src/discord-rpc.h
         src/discord-rpc.cpp
         assets/assets.qrc
+	   assets/icon.rc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

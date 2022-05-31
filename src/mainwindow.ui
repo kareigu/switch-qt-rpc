@@ -344,7 +344,7 @@ border-radius: 3;</string>
           <property name="styleSheet">
            <string notr="true">image: url(:/images/default.png);
 background-color: rgb(252, 252, 252);
-border: 2 solid #ff000e;
+border: 2 solid #00c0e1;
 border-radius: 3;</string>
           </property>
           <property name="text">

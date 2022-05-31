@@ -31,8 +31,12 @@ private slots:
   void bwIconButtonReleased();
 
 private:
+  void iconButtonReleased(QPushButton*, const char*, bool skipCheck = false);
+
   Ui::MainWindow* ui;
   AboutDialog* m_AboutDialog;
+
+  QVector<QPushButton*> m_IconButtons;
 
   DC_RPC::Data* m_DiscordData;
 };

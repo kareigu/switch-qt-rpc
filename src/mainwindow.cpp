@@ -27,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->idleButton, &QPushButton::released, this, &MainWindow::idleButtonReleased);
 
 
+  m_IconButtons = {
+    ui->defaultIconButton,
+    ui->bwIconButton
+  };
   connect(ui->defaultIconButton, &QPushButton::pressed, this, &MainWindow::defaultIconButtonPressed);
   connect(ui->defaultIconButton, &QPushButton::released, this, &MainWindow::defaultIconButtonReleased);
   connect(ui->bwIconButton, &QPushButton::pressed, this, &MainWindow::bwIconButtonPressed);
@@ -50,12 +54,29 @@ void iconButtonPressed(QPushButton* btn, const char* iconName) {
   btn->setStyleSheet(styleSheet.c_str());
 }
 
-void iconButtonReleased(QPushButton* btn, const char* iconName) {
-  std::string styleSheet = "background-color: rgb(252, 252, 252);\nborder: 2 solid #ff000e;\nborder-radius: 3;";
-  styleSheet.append("\nimage: url(:/images/");
-  styleSheet.append(iconName);
-  styleSheet.append(".png);");
-  btn->setStyleSheet(styleSheet.c_str());
+void MainWindow::iconButtonReleased(QPushButton* btn, const char* iconName, bool skipCheck) {
+
+  if (skipCheck) {
+    std::string styleSheet = "background-color: rgb(252, 252, 252);\nborder: 2 solid #ff000e;\nborder-radius: 3;";
+    styleSheet.append("\nimage: url(:/images/");
+    styleSheet.append(iconName);
+    styleSheet.append(".png);");
+    btn->setStyleSheet(styleSheet.c_str());
+  } else {
+    std::string image(iconName);
+    if (m_DiscordData->image != image) {
+      iconButtonReleased(btn, iconName, true);
+      return;
+    }
+
+    // FIXME: Create a proper data format to allow looping through the vector
+    // and resetting all other buttons
+    if (image == "bw")
+      iconButtonReleased(m_IconButtons[0], DC_RPC::defaultImage(), true);
+
+    if (image == DC_RPC::defaultImage())
+      iconButtonReleased(m_IconButtons[1], "bw", true);
+  }
 }
 
 void primaryButtonPressed(QPushButton* btn) {
@@ -81,8 +102,8 @@ void MainWindow::defaultIconButtonPressed() {
 
 void MainWindow::defaultIconButtonReleased() {
   const char* iconName = DC_RPC::defaultImage();
-  iconButtonReleased(ui->defaultIconButton, iconName);
   m_DiscordData->image = iconName;
+  iconButtonReleased(ui->defaultIconButton, iconName);
 }
 
 void MainWindow::bwIconButtonPressed() {
@@ -92,8 +113,8 @@ void MainWindow::bwIconButtonPressed() {
 
 void MainWindow::bwIconButtonReleased() {
   const char* iconName = "bw";
-  iconButtonReleased(ui->bwIconButton, iconName);
   m_DiscordData->image = iconName;
+  iconButtonReleased(ui->bwIconButton, iconName);
 }
 
 void MainWindow::setPlayingButtonPressed() {

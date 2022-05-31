@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
 #include "discord-rpc.h"
+#include "aboutdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,8 +31,8 @@ private slots:
   void bwIconButtonReleased();
 
 private:
-  Ui::MainWindow *ui;
-
+  Ui::MainWindow* ui;
+  AboutDialog* m_AboutDialog;
 
   DC_RPC::Data* m_DiscordData;
 };

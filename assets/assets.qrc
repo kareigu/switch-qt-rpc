@@ -4,4 +4,7 @@
         <file>bw.png</file>
         <file>default.png</file>
     </qresource>
+    <qresource prefix="/markup">
+        <file>about.html</file>
+    </qresource>
 </RCC>

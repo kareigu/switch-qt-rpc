@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow)
+  , m_AboutDialog(new AboutDialog(this))
 {
   ui->setupUi(this);
   m_DiscordData = DC_RPC::initDiscord();
@@ -30,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->defaultIconButton, &QPushButton::released, this, &MainWindow::defaultIconButtonReleased);
   connect(ui->bwIconButton, &QPushButton::pressed, this, &MainWindow::bwIconButtonPressed);
   connect(ui->bwIconButton, &QPushButton::released, this, &MainWindow::bwIconButtonReleased);
+
+  connect(ui->aboutButton, &QPushButton::released, this, [this]() { m_AboutDialog->show(); });
 }
 
 MainWindow::~MainWindow() {

@@ -21,6 +21,9 @@ set(PROJECT_SOURCES
         src/mainwindow.ui
         src/discord-rpc.h
         src/discord-rpc.cpp
+        src/aboutdialog.h
+        src/aboutdialog.cpp
+        src/aboutdialog.ui
         assets/assets.qrc
 	   assets/icon.rc
 )

@@ -5,6 +5,6 @@
         <file>default.png</file>
     </qresource>
     <qresource prefix="/markup">
-        <file>about.html</file>
+        <file>about.md</file>
     </qresource>
 </RCC>

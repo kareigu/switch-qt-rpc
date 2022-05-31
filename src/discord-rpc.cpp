@@ -18,6 +18,12 @@ namespace DC_RPC {
 
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
     } while (!data->interrupt);
+    data->core->ActivityManager().ClearActivity([](discord::Result result) {
+        if (result == discord::Result::Ok)
+          return;
+        QDebug(QtMsgType::QtDebugMsg) << QString("Failed clearing activity with code %1").arg(QString::number(static_cast<int>(result)));
+      });
+    data->core->RunCallbacks();
     QDebug(QtMsgType::QtInfoMsg) << "Stopping Discord callback thread";
   }
 

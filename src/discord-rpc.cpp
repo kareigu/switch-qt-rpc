@@ -51,6 +51,7 @@ namespace DC_RPC {
     activity.SetState(data->statusMsg.c_str());
     activity.GetAssets().SetLargeImage(data->image.c_str());
     activity.GetAssets().SetSmallImage(defaultImage());
+    activity.GetAssets().SetLargeText(data->gameName.c_str());
     activity.GetTimestamps().SetStart(data->startTime / 10'000'000);
     activity.SetType(discord::ActivityType::Playing);
     data->core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {

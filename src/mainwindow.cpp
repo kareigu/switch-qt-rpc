@@ -110,6 +110,7 @@ void MainWindow::setPlayingButtonReleased() {
   }
 
   QDebug(QtMsgType::QtDebugMsg) << "Set Playing - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
+  DC_RPC::updateActivity(m_DiscordData);
   primaryButtonReleased(ui->setPlayingButton);
 }
 
@@ -122,6 +123,7 @@ void MainWindow::idleButtonReleased() {
   m_DiscordData->statusMsg = DC_RPC::defaultStatus();
   ui->statusMsg->setText(DC_RPC::defaultStatus());
   QDebug(QtMsgType::QtDebugMsg) << "Set Idle - " << m_DiscordData->gameName.c_str() << " - " << m_DiscordData->statusMsg.c_str();
+  DC_RPC::updateActivity(m_DiscordData);
   secondaryButtonReleased(ui->idleButton);
 }
 

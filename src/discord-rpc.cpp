@@ -3,15 +3,20 @@
 #include <thread>
 #include <chrono>
 
+bool stateChanged(DC_RPC::Data* data) {
+  return !(
+      data->prevState.gameName == data->gameName &&
+      data->prevState.statusMsg == data->statusMsg);
+}
+
 namespace DC_RPC {
 
   void runDiscordCallbacks(Data* data) {
     QDebug(QtMsgType::QtInfoMsg) << "Running Discord callbacks";
     do {
-      updateActivity(data);
       data->core->RunCallbacks();
 
-      std::this_thread::sleep_for(std::chrono::milliseconds(300));
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
     } while (!data->interrupt);
     QDebug(QtMsgType::QtInfoMsg) << "Stopping Discord callback thread";
   }
@@ -32,33 +37,16 @@ namespace DC_RPC {
   void updateActivity(Data* data) {
     discord::Activity activity{};
     activity.SetDetails(data->gameName.c_str());
-    if (
-        data->prevState.gameName == data->gameName &&
-        data->prevState.statusMsg == data->statusMsg
-       )
-      {
-        auto now = std::chrono::system_clock::now();
-        auto elapsedInSeconds = (now - data->startTime).count() / 10'000'000;
-        auto elapsed_h = elapsedInSeconds / 3600;
-        auto elapsed_m = (elapsedInSeconds % 3600) / 60;
-        auto elapsed_s = ((elapsedInSeconds % 3600) % 60);
-        QString formattedStatus = QString("%1 (%2%3:%4%5:%6%7)")
-            .arg(QString::fromStdString(data->statusMsg),
-                 elapsed_h < 10 ? "0" : "", QString::number(elapsed_h),
-                 elapsed_m < 10 ? "0" : "", QString::number(elapsed_m),
-                 elapsed_s < 10 ? "0" : "", QString::number(elapsed_s));
-        activity.SetState(formattedStatus.toStdString().c_str());
-      }
-    else
-      {
-        data->startTime = std::chrono::system_clock::now();
+    if (stateChanged(data)) {
+        data->startTime = std::chrono::system_clock::now().time_since_epoch().count();
         data->prevState = { data->gameName, data->statusMsg };
-        QString formattedStatus = QString("%1 (00:00:00)").arg(QString::fromStdString(data->statusMsg));
-        activity.SetState(formattedStatus.toStdString().c_str());
-      }
+    }
 
+    activity.SetState(data->statusMsg.c_str());
     activity.GetAssets().SetLargeImage(data->image.c_str());
     activity.GetAssets().SetSmallImage(defaultImage());
+    activity.GetTimestamps().SetStart(data->startTime / 10'000'000);
+    activity.SetType(discord::ActivityType::Playing);
     data->core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {
       if (result == discord::Result::Ok)
         return;

@@ -29,7 +29,7 @@ namespace DC_RPC {
 
     PrevState prevState;
 
-    std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+    discord::Timestamp startTime = std::chrono::system_clock::now().time_since_epoch().count();
 
 
     bool interrupt = false;
